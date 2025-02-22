@@ -21,7 +21,7 @@ Simple product catalog Android app, which uses dummyjson.com
 
 # Screenshots
 
-<img src="https://i.imgur.com/ixm0GQs.png" alt="Catalog" width="25%" height="25%"> <img src="https://i.imgur.com/tE8fDfY.png" alt="Search" width="25%" height="25%"> <img src="https://i.imgur.com/H0gX3B9.png" alt="Search" width="25%" height="25%"> 
+<img src="https://i.imgur.com/ixm0GQs.png" alt="Catalog" width="25%" height="25%"> <img src="https://i.imgur.com/tE8fDfY.png" alt="Search" width="25%" height="25%"> <img src="https://i.imgur.com/H0gX3B9.png" alt="Search" width="50%" height="50%"> 
 
 
 
