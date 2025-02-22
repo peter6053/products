@@ -65,6 +65,7 @@ Why?
 - The encryption key never leaves the Keystore, ensuring it cannot be extracted.
 
 - Encrypted data is stored in Room Database or SharedPreferences, depending on use case.
+- Demonstrated by SubmitData dummy endpoint on how to send encrypted data
 ## Data Decrption
 
 When the encrypted data is received by the backend, the server follows these steps to decrypt it:
