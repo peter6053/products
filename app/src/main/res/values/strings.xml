@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Dummy Store</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="retry">Retry</string>
+    <string name="products">Products</string>
+    <string name="currency">$</string>
+    <string name="in_stock">In stock:</string>
+    <string name="brand">Brand:</string>
+    <string name="search">Search</string>
+    <string name="products_to_search">Products to search</string>
+    <string name="categories">Categories</string>
+    <string name="reset">Reset category</string>
+</resources>
