@@ -7,6 +7,7 @@ import com.peter.pezesha.data.network.dummyjson.datasource.response.ProductsResp
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -27,5 +28,5 @@ interface DummyJsonApi {
     fun getCategories(): Call<CategoriesResponse>
 
     @POST("submitData")
-    fun sendEncryptedData(@Body encryptedRequest: EncryptedRequest): Call<EncryptedRequest> // ✅ Return Call<>
-}
+    @Headers("Content-Type: application/json")
+    suspend fun sendEncryptedData(@Body encryptedRequest: EncryptedRequest): EncryptedRequest }

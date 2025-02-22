@@ -1,6 +1,5 @@
 package com.peter.pezesha.data.network.dummyjson
 
-import android.util.Log
 import com.peter.pezesha.data.mapper.CategoriesMapper
 import com.peter.pezesha.data.network.base.BaseRepository
 import com.peter.pezesha.data.network.dummyjson.datasource.DummyJsonApi
@@ -9,7 +8,6 @@ import com.peter.pezesha.domain.model.response.CategoryList
 import com.peter.pezesha.domain.repository.CategoryRepository
 import com.peter.pezesha.utils.crypto.CryptoManager
 import com.peter.pezesha.utils.platform.NetworkHandler
-import retrofit2.HttpException
 
 import javax.inject.Inject
 import android.util.Base64
@@ -38,19 +36,17 @@ class DefaultCategoryRepository @Inject constructor(
             )
 
             val encryptedBase64 = Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
-
             val request = EncryptedRequest(encryptedBase64)
 
-            request(
-                call = dummyJsonApi.sendEncryptedData(request),
-                transform = { it }
-            )
+            val response = dummyJsonApi.sendEncryptedData(request)
+
+            Result.success(response)
 
         } catch (e: Exception) {
-            Log.e("Crypto", "Encryption/Transmission Error", e)
             Result.failure(e)
         }
     }
+
 
 
 

@@ -58,6 +58,7 @@ import kotlinx.coroutines.CoroutineStart
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import android.util.Base64
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -115,13 +116,9 @@ fun DetailsScreen(
 
 @OptIn(ExperimentalEncodingApi::class)
 @Composable
-private fun DetailsLayout(product: Product) {
+private fun DetailsLayout(product: Product, viewModel: DetailsViewModel = hiltViewModel()) {
     val scrollState = rememberScrollState()
-    val cryptoManager = remember { CryptoManager() }
-    val context = LocalContext.current
-
-    var encryptedStock by remember { mutableStateOf("") }
-    var decryptedStock by remember { mutableStateOf("") }
+    val encryptedStock by viewModel.encryptedStock.observeAsState("")
 
     Column(
         modifier = Modifier
@@ -135,30 +132,10 @@ private fun DetailsLayout(product: Product) {
         ProductDetails(product = product)
 
         Button(
-            onClick = {
-                try {
-                    val stockString = product.description.toString()
-                    val encryptedBytes = cryptoManager.encrypt(
-                        bytes = stockString.toByteArray(),
-                        outputStream = ByteArrayOutputStream()
-                    )
-                    encryptedStock = Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
-
-                    // Decrypt
-                    val decryptedBytes = cryptoManager.decrypt(
-                        inputStream = ByteArrayInputStream(encryptedBytes)
-                    )
-                    decryptedStock = String(decryptedBytes)
-
-                    Log.d("Crypto", "Encrypted Stock: $encryptedStock")
-                    Log.d("Crypto", "Decrypted Stock: $decryptedStock")
-                } catch (e: Exception) {
-                    Log.e("Crypto", "Encryption/Decryption Error", e)
-                }
-            },
+            onClick = { viewModel.sendEncryptedStock(product.stock) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Encrypt Stock")
+            Text(text = "Encrypt & Send Stock")
         }
 
         Text(text = "Encrypted Stock: $encryptedStock", fontSize = 14.sp, color = Color.Gray)
