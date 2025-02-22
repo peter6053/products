@@ -1,10 +1,13 @@
 package com.peter.pezesha.data.network.dummyjson.datasource
 
+import com.peter.pezesha.data.network.dummyjson.datasource.request.EncryptedRequest
 import com.peter.pezesha.data.network.dummyjson.datasource.response.CategoriesResponse
 import com.peter.pezesha.data.network.dummyjson.datasource.response.ProductResponse
 import com.peter.pezesha.data.network.dummyjson.datasource.response.ProductsResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -22,4 +25,7 @@ interface DummyJsonApi {
 
     @GET("products/categories")
     fun getCategories(): Call<CategoriesResponse>
+
+    @POST("submitData")
+    fun sendEncryptedData(@Body encryptedRequest: EncryptedRequest): Call<EncryptedRequest> // ✅ Return Call<>
 }

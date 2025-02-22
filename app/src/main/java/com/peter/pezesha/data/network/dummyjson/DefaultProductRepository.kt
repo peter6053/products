@@ -6,6 +6,7 @@ import com.peter.pezesha.data.network.dummyjson.datasource.DummyJsonApi
 import com.peter.pezesha.domain.model.response.Product
 import com.peter.pezesha.domain.model.response.ProductList
 import com.peter.pezesha.domain.repository.ProductRepository
+import com.peter.pezesha.utils.crypto.CryptoManager
 import com.peter.pezesha.utils.platform.NetworkHandler
 import javax.inject.Inject
 
@@ -14,6 +15,8 @@ class DefaultProductRepository @Inject constructor(
     networkHandler: NetworkHandler,
     private val dummyJsonApi: DummyJsonApi,
     private val productsMapper: ProductsMapper,
+    private val cryptoManager: CryptoManager,
+
 ) : BaseRepository(networkHandler = networkHandler), ProductRepository {
 
     override fun getProduct(id: Int): Result<Product> =

@@ -1,5 +1,6 @@
 package com.peter.pezesha.ui.screens.details
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,15 +28,21 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.peter.pezesha.domain.model.response.Product
 import com.peter.pezesha.ui.components.CardColumn
 import com.peter.pezesha.ui.components.Error
@@ -45,7 +52,15 @@ import com.peter.pezesha.ui.components.Loader
 import com.peter.pezesha.ui.components.MediumText
 import com.peter.pezesha.ui.components.ParagraphText
 import com.peter.pezesha.ui.components.Rating
+import com.peter.pezesha.utils.crypto.CryptoManager
 import com.pezesha.R
+import kotlinx.coroutines.CoroutineStart
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import android.util.Base64
+
+
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 const val DEFAULT_PRODUCT_ID = 1
 private const val PRODUCT_QTY = 200
@@ -97,9 +112,16 @@ fun DetailsScreen(
     }
 }
 
+
+@OptIn(ExperimentalEncodingApi::class)
 @Composable
 private fun DetailsLayout(product: Product) {
     val scrollState = rememberScrollState()
+    val cryptoManager = remember { CryptoManager() }
+    val context = LocalContext.current
+
+    var encryptedStock by remember { mutableStateOf("") }
+    var decryptedStock by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -107,20 +129,39 @@ private fun DetailsLayout(product: Product) {
             .padding(all = 8.dp),
     ) {
         ProductImages(product = product)
-
         ProductPrice(product = product)
-
         ProductRating(product = product)
-
         ProductStock(product = product)
-
         ProductDetails(product = product)
+
         Button(
-            onClick = { /* Handle button click */ },
+            onClick = {
+                try {
+                    val stockString = product.description.toString()
+                    val encryptedBytes = cryptoManager.encrypt(
+                        bytes = stockString.toByteArray(),
+                        outputStream = ByteArrayOutputStream()
+                    )
+                    encryptedStock = Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
+
+                    // Decrypt
+                    val decryptedBytes = cryptoManager.decrypt(
+                        inputStream = ByteArrayInputStream(encryptedBytes)
+                    )
+                    decryptedStock = String(decryptedBytes)
+
+                    Log.d("Crypto", "Encrypted Stock: $encryptedStock")
+                    Log.d("Crypto", "Decrypted Stock: $decryptedStock")
+                } catch (e: Exception) {
+                    Log.e("Crypto", "Encryption/Decryption Error", e)
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Buy Now")
+            Text(text = "Encrypt Stock")
         }
+
+        Text(text = "Encrypted Stock: $encryptedStock", fontSize = 14.sp, color = Color.Gray)
     }
 }
 
