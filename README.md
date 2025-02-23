@@ -21,7 +21,7 @@ Simple product catalog Android app, which uses dummyjson.com
 
 # Screenshots
 
-<img src="https://i.imgur.com/ixm0GQs.png" alt="Catalog" width="25%" height="25%"> <img src="https://i.imgur.com/tE8fDfY.png" alt="Search" width="25%" height="25%"> <img src="https://i.imgur.com/H0gX3B9.png" alt="Search" width="50%" height="50%"> 
+<img src="https://i.imgur.com/ixm0GQs.png" alt="Catalog" width="25%" height="25%"> <img src="https://i.imgur.com/tE8fDfY.png" alt="Search" width="25%" height="25%"> <img src="https://i.imgur.com/H0gX3B9.png" alt="Search" width="25%" height="25%"> 
 
 
 
@@ -50,7 +50,7 @@ Simple product catalog Android app, which uses dummyjson.com
 
 
 
-## Secure Data Handling 
+## Secure Data Handling
 Chosen Encryption Method:
 ## AES-256 (Android Keystore)
 We use AES-256 with CBC mode for encrypting sensitive data at rest.
@@ -65,7 +65,6 @@ Why?
 - The encryption key never leaves the Keystore, ensuring it cannot be extracted.
 
 - Encrypted data is stored in Room Database or SharedPreferences, depending on use case.
-- Demonstrated by SubmitData dummy endpoint on how to send encrypted data
 ## Data Decrption
 
 When the encrypted data is received by the backend, the server follows these steps to decrypt it:
@@ -74,7 +73,14 @@ When the encrypted data is received by the backend, the server follows these ste
 - Extract the IV (Initialization Vector) from the first 16 bytes of the decoded data.
 - Use AES-256 in CBC mode with the securely stored encryption key to decrypt the remaining content.
 -  Remove padding from the decrypted data to get the original plaintext, the keuy used to encrpt must be used to decrypt
+- clicking the Buy Now button a dummy request is sent with encrypted data
+
 ## How to run the app
 - Clone the repository and open it in Android Studio using this link  https://github.com/peter6053/products.git
 - Connect a device or start an emulator.
 - Click Run to build and launch the app
+## Known Bugs & Improvements
+
+- large amount of data being loaded through paging, a work manager would be ideal to show data to the user as the data streams from the api or local db
+
+-Offline caching has bug
