@@ -13,9 +13,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @HiltViewModel(assistedFactory = DetailsViewModel.Factory::class)
@@ -63,7 +61,7 @@ class DetailsViewModel @AssistedInject constructor(
 
             result.onSuccess { encryptedRequest ->
                 Log.d("Crypto", "Stock successfully sent: ${encryptedRequest.data}")
-                _encryptedStock.postValue(encryptedRequest.data) // ✅ Update LiveData
+                _encryptedStock.postValue(encryptedRequest.data)
             }.onFailure {
                 Log.e("Crypto", "Failed to send encrypted stock", it)
             }

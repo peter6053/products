@@ -135,10 +135,9 @@ private fun DetailsLayout(product: Product, viewModel: DetailsViewModel = hiltVi
             onClick = { viewModel.sendEncryptedStock(product.stock) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Encrypt & Send Stock")
+            Text(text = "Buy Now")
         }
 
-        Text(text = "Encrypted Stock: $encryptedStock", fontSize = 14.sp, color = Color.Gray)
     }
 }
 
